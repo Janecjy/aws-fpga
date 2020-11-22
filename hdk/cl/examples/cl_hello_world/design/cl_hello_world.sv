@@ -1,17 +1,3 @@
-// Amazon FPGA Hardware Development Kit
-//
-// Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-//
-// Licensed under the Amazon Software License (the "License"). You may not use
-// this file except in compliance with the License. A copy of the License is
-// located at
-//
-//    http://aws.amazon.com/asl/
-//
-// or in the "license" file accompanying this file. This file is distributed on
-// an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or
-// implied. See the License for the specific language governing permissions and
-// limitations under the License.
 
 module cl_hello_world 
 
@@ -56,6 +42,7 @@ logic rst_main_n_sync;
   logic [15:0] sh_cl_status_vdip_q;
   logic [15:0] sh_cl_status_vdip_q2;
   logic [31:0] hello_world_q;
+  logic [4095:0][31:0] reg_array;
 
 //-------------------------------------------------
 // ID Values (cl_hello_world_defines.vh)
@@ -256,9 +243,9 @@ always_ff @(posedge clk_main_a0)
    else if (arvalid_q) 
    begin
       rvalid <= 1;
-      rdata  <= (araddr_q == `HELLO_WORLD_REG_ADDR) ? hello_world_q_byte_swapped[31:0]:
+      rdata  <= 
                 (araddr_q == `VLED_REG_ADDR       ) ? {16'b0,vled_q[15:0]            }:
-                                                      `UNIMPLEMENTED_REG_VALUE        ;
+                                                      hello_world_q_byte_swapped[31:0]        ;
       rresp  <= 0;
    end
 
@@ -269,17 +256,16 @@ always_ff @(posedge clk_main_a0)
 
 always_ff @(posedge clk_main_a0)
    if (!rst_main_n_sync) begin                    // Reset
-      hello_world_q[31:0] <= 32'h0000_0000;
+         reg_array <=  {default:'1};
    end
-   else if (wready & (wr_addr == `HELLO_WORLD_REG_ADDR)) begin  
-      hello_world_q[31:0] <= wdata[31:0];
+   else if (wready) begin  
+      reg_array[wr_addr] <= wdata[31:0];
    end
    else begin                                // Hold Value
-      hello_world_q[31:0] <= hello_world_q[31:0];
+      reg_array <= reg_array;
    end
 
-assign hello_world_q_byte_swapped[31:0] = {hello_world_q[7:0],   hello_world_q[15:8],
-                                           hello_world_q[23:16], hello_world_q[31:24]};
+assign hello_world_q_byte_swapped[31:0] = reg_array[araddr_q];
 
 //-------------------------------------------------
 // Virtual LED Register
@@ -462,8 +448,4 @@ always_ff @(posedge clk_main_a0)
 `endif //  `ifndef DISABLE_VJTAG_DEBUG
 
 endmodule
-
-
-
-
 

@@ -24,7 +24,7 @@ CFLAGS = -DCONFIG_LOGLEVEL=4 -g -Wall $(INCLUDES)
 
 LDLIBS = -lfpga_mgmt -lrt -lpthread
 
-SRC = ${SDK_DIR}/userspace/utils/sh_dpi_tasks.c test_hello_world.c
+SRC = ${SDK_DIR}/userspace/utils/sh_dpi_tasks.c read_reg_runtime.c
 OBJ = $(SRC:.c=.o)
 BIN = test_hello_world
 
