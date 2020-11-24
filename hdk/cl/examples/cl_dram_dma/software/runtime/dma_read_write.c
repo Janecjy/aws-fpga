@@ -142,7 +142,7 @@ int dma_example(int slot_id, size_t buffer_size) {
     //write
     //ini write buffer
     for(index = 0; index < buffer_size; index++) 
-        write_buffer[index] = buffer_size % 256;
+        write_buffer[index] = index % 256;
         
     for (dimm = 0; dimm < 4; dimm++) {
         rc = fpga_dma_burst_write(write_fd, write_buffer, buffer_size,
