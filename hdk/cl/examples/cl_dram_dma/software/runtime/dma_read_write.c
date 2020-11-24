@@ -47,7 +47,7 @@ int axi_mstr_ddr_access(int slot_id, pci_bar_handle_t pci_bar_handle, uint32_t d
 int main(int argc, char **argv) {
     int rc;
     int slot_id = 0;
-    int interrupt_n;
+    // int interrupt_n;
 
     switch (argc) {
     case 1:
@@ -134,9 +134,9 @@ int dma_example(int slot_id, size_t buffer_size) {
         rc = fpga_dma_burst_read(read_fd, read_buffer, buffer_size,
             dimm * MEM_16G);
         fail_on(rc, out, "DMA read failed on DIMM: %d", dimm);
-        log_info("FPGA_DMA_READ DIMM:%d", &dimm);
+        log_info("FPGA_DMA_READ DIMM:%d", dimm);
         for(entry = 0; entry < buffer_size; entry++)
-            printf("entry %d: %x/n", read_buffer[entry]);
+            printf("entry %d: %x/n", entry, read_buffer[entry]);
     }
 
     //write
