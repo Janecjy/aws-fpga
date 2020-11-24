@@ -1,8 +1,9 @@
 #!/bin/bash
 bucket_name="aws-fpga-clean-eval-test"
 result_folder_name="dma_read_write_result"
-aws_access_key_id=$1
-aws_secret_access_key=$2
+export AWS_ACCESS_KEY_ID=$1
+export AWS_SECRET_ACCESS_KEY=$2
+export AWS_DEFAULT_REGION=us-east-1
 i=$3
 
 echo "Start setup environment"
@@ -12,16 +13,6 @@ source sdk_setup.sh | tail -n 4
 
 echo "Update AWS CLI"
 pip install --upgrade --user awscli
-
-echo "AWS confugure"
-echo "[default]
-output = json
-region = us-east-1" > config
-cp config ~/.aws/
-echo "[default]
-aws_access_key_id = " $aws_access_key_id > credentials
-echo "aws_secret_access_key = " $aws_secret_access_key >> credentials
-cp credentials ~/.aws/ 
 
 echo "Describe image"
 sudo fpga-describe-local-image -S 0
