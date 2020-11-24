@@ -6,11 +6,6 @@ export AWS_SECRET_ACCESS_KEY=$2
 export AWS_DEFAULT_REGION=us-east-1
 i=$3
 
-echo "Start setup environment"
-
-echo "SDK setup"
-source sdk_setup.sh | tail -n 4
-
 echo "Update AWS CLI"
 pip install --upgrade --user awscli
 
