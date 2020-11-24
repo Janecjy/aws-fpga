@@ -20,14 +20,14 @@ CFLAGS = -DCONFIG_LOGLEVEL=4 -std=gnu11 -g -Wall -Werror $(INCLUDES)
 
 LDLIBS = -lfpga_mgmt
 
-SRC = test_dram_dma_common.c test_dram_dma_retention.c test_dram_dma.c test_dram_dma_hwsw_cosim.c
+SRC = test_dram_dma_common.c test_dram_dma_retention.c dma_read_write.c test_dram_dma_hwsw_cosim.c
 OBJ = $(SRC:.c=.o)
 
 
 all: test_dram_dma check_env retention cosim $(BIN)
 
 test_dram_dma: $(OBJ)
-	$(CC) $(CFLAGS) -o test_dram_dma test_dram_dma.o test_dram_dma_common.o  $(LDFLAGS) $(LDLIBS)
+	$(CC) $(CFLAGS) -o test_dram_dma dma_read_write.o test_dram_dma_common.o  $(LDFLAGS) $(LDLIBS)
 
 retention: $(OBJ)
 	$(CC) $(CFLAGS) -o test_dram_dma_retention test_dram_dma_retention.o test_dram_dma_common.o $(LDFLAGS) $(LDLIBS)
