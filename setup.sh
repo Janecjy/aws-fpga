@@ -46,4 +46,6 @@ echo "Load image"
 sudo fpga-load-local-image -S 0 -I agfi-0b5c35827af676702
 echo "Run second read_write test"
 sudo ./test_dram_dma > "reload_result_$i.txt"
+aws s3 cp init_result_$i.txt s3://$bucket-name/$result_folder_name/
+aws s3 cp reload_result_$i.txt s3://$bucket-name/$result_folder_name/
 echo "Finish test"
