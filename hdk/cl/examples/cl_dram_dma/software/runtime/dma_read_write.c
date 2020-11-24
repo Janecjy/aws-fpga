@@ -136,7 +136,7 @@ int dma_example(int slot_id, size_t buffer_size) {
         fail_on(rc, out, "DMA read failed on DIMM: %d", dimm);
         log_info("FPGA_DMA_READ DIMM:%d", dimm);
         for(entry = 0; entry < buffer_size; entry++)
-            printf("entry %d: %x/n", entry, read_buffer[entry]);
+            printf("entry %d: %x\n", entry, read_buffer[entry]);
     }
 
     //write
