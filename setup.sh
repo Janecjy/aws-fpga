@@ -10,10 +10,6 @@ echo "Start setup environment"
 echo "SDK setup"
 source sdk_setup.sh | tail -n 4
 
-echo "HDK setup"
-source hdk_setup.sh | tail -n 10
-vivado -mode batch
-
 echo "Update AWS CLI"
 pip install --upgrade --user awscli
 
