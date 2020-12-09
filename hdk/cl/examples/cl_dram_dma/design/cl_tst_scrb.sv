@@ -146,25 +146,88 @@ module  cl_tst_scrb #(parameter DATA_WIDTH=512,
 
    logic                             scrb_enable_q;
 
-   assign scrb_enable_q = '{default:'0};
-   assign scrb_awid     = '{default:'0};
-   assign scrb_awaddr   = '{default:'0};
-   assign scrb_awlen    = '{default:'0};
-   assign scrb_awvalid  = '{default:'0};
-   assign scrb_awuser   = '{default:'0};
-   assign scrb_wid      = '{default:'0};
-   assign scrb_wdata    = '{default:'0};
-   assign scrb_wstrb    = '{default:'0};
-   assign scrb_wlast    = '{default:'0};
-   assign scrb_wvalid   = '{default:'0};
-   assign scrb_bready   = '{default:'0};
-   assign scrb_arid     = '{default:'0};
-   assign scrb_araddr   = '{default:'0};
-   assign scrb_arlen    = '{default:'0};
-   assign scrb_arvalid  = '{default:'0};
-   assign scrb_aruser   = '{default:'0};
-   assign scrb_arready  = '{default:'0};
-   assign scrb_rready   = '{default:'0};
+   generate
+      if (NO_SCRB_INST == 0) begin: gen_scrb
+         always_ff @(posedge clk or negedge rst_n)
+           if (!rst_n)
+             scrb_enable_q <= 1'b0;
+           else
+             scrb_enable_q <= scrb_enable;
+         
+         // Instance mem_scrb
+         mem_scrb 
+           #(.DATA_WIDTH(DATA_WIDTH),
+             .ID_WIDTH  (6),
+             .USER_WIDTH(11),
+             .BURST_LEN_MINUS1 (SCRB_BURST_LEN_MINUS1),
+             .MAX_ADDR(SCRB_MAX_ADDR)
+             ) 
+         MEM_SCRB (
+            
+                   .clk(clk),
+                   .rst_n(rst_n),
+
+                   .awid(scrb_awid),
+                   .awaddr(scrb_awaddr), 
+                   .awlen(scrb_awlen),
+                   .awvalid(scrb_awvalid),
+                   .awuser(scrb_awuser),
+                   .awready(scrb_awready),
+
+                   .wid(scrb_wid),
+                   .wdata(scrb_wdata),
+                   .wstrb(scrb_wstrb),
+                   .wlast(scrb_wlast),
+                   .wvalid(scrb_wvalid),
+                   .wready(scrb_wready),
+
+                   .bvalid(scrb_bvalid),
+                   .bready(scrb_bready),
+
+                   .arid(scrb_arid),
+                   .araddr(scrb_araddr),
+                   .arlen(scrb_arlen),
+                   .arvalid(scrb_arvalid),
+                   .aruser(scrb_aruser),
+                   .arready(scrb_arready),
+
+                   .rready(scrb_rready),
+
+                   .scrb_enable(scrb_enable),
+                   .scrb_done(scrb_done),
+
+                   .dbg_state(scrb_dbg_state),
+                   .dbg_addr (scrb_dbg_addr)
+            
+                   );
+
+      end // block: gen_scrb_inst
+      else begin : gen_noscrb
+
+         assign scrb_enable_q = '{default:'0};
+         assign scrb_awid     = '{default:'0};
+         assign scrb_awaddr   = '{default:'0};
+         assign scrb_awlen    = '{default:'0};
+         assign scrb_awvalid  = '{default:'0};
+         assign scrb_awuser   = '{default:'0};
+         assign scrb_wid      = '{default:'0};
+         assign scrb_wdata    = '{default:'0};
+         assign scrb_wstrb    = '{default:'0};
+         assign scrb_wlast    = '{default:'0};
+         assign scrb_wvalid   = '{default:'0};
+         assign scrb_bready   = '{default:'0};
+         assign scrb_arid     = '{default:'0};
+         assign scrb_araddr   = '{default:'0};
+         assign scrb_arlen    = '{default:'0};
+         assign scrb_arvalid  = '{default:'0};
+         assign scrb_aruser   = '{default:'0};
+         assign scrb_arready  = '{default:'0};
+         assign scrb_rready   = '{default:'0};
+         
+      end // block: gen_noscrb
+         
+   endgenerate
+   
    
    // Instance cl_tst
    logic [8:0]                       atg_awid;
