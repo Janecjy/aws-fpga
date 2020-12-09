@@ -164,10 +164,10 @@ always_ff @(posedge clk or negedge sync_rst_n)
   else
     sh_cl_ctl0_q <= sh_cl_ctl0;
 
-assign ddra_scrb_bus.enable = sh_cl_ctl0_q[0];
-assign ddrb_scrb_bus.enable = sh_cl_ctl0_q[1];
-assign ddrd_scrb_bus.enable = sh_cl_ctl0_q[2];
-assign ddrc_scrb_bus.enable = sh_cl_ctl0_q[3];
+assign ddra_scrb_bus.enable = 1'b0;
+assign ddrb_scrb_bus.enable = 1'b0;
+assign ddrd_scrb_bus.enable = 1'b0;
+assign ddrc_scrb_bus.enable = 1'b0;
 
 
 assign dbg_scrb_en = sh_cl_ctl0_q[31];
