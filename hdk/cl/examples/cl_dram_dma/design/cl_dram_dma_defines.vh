@@ -59,3 +59,4 @@
 
 `endif
 
+`define NO_CL_TST_SCRUBBER
